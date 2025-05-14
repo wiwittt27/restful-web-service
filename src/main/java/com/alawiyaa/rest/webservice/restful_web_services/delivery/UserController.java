@@ -3,12 +3,9 @@ package com.alawiyaa.rest.webservice.restful_web_services.delivery;
 import java.net.URI;
 import java.util.List;
 
+import com.alawiyaa.rest.webservice.restful_web_services.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.alawiyaa.rest.webservice.restful_web_services.model.users.User;
@@ -29,15 +26,32 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User findOne(@PathVariable int id){
-        return userDaoService.findOne(id);
+        User user = userDaoService.findOne(id);
+        if (user==null){
+            throw new UserNotFoundException("id ="+id);
+        }
+
+        return  user;
     }
 
     @PostMapping("/users")
     public ResponseEntity<?> addUser(@RequestBody User user){
       User data =  userDaoService.userSave(user);
+
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(data.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @DeleteMapping("/users/{id}")
+    public User deleteUser(@PathVariable int id){
+        User user = userDaoService.findOne(id);
+        if (user==null){
+            throw new UserNotFoundException("id ="+id);
+        }
+
+        return  user;
+    }
+
 
 
 }
