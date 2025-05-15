@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.List;
 
 import com.alawiyaa.rest.webservice.restful_web_services.exception.UserNotFoundException;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,13 +31,16 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User findOne(@Valid @PathVariable int id) {
+    public EntityModel<User> findOne(@Valid @PathVariable int id) {
         User user = userDaoService.findOne(id);
         if (user == null) {
             throw new UserNotFoundException("id =" + id);
         }
 
-        return user;
+        EntityModel<User> entityModel = EntityModel.of(user);
+        WebMvcLinkBuilder link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).retriveAllUsers());
+        entityModel.add(link.withRel("all-users"));
+        return entityModel;
     }
 
     @PostMapping("/users")
