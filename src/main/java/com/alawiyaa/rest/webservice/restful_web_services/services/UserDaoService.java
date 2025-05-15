@@ -11,7 +11,7 @@ import com.alawiyaa.rest.webservice.restful_web_services.model.users.User;
 @Component
 public class UserDaoService {
     private static List<User> users = new ArrayList<>();
-    private static int userCount =1;
+    private static int userCount = 1;
 
     static {
         users.add(new User(userCount++, "adam", LocalDate.now().minusYears(30)));
@@ -29,13 +29,13 @@ public class UserDaoService {
                 .orElse(null);
     }
 
-    public User userSave(User user){
+    public User userSave(User user) {
         user.setId(userCount++);
         users.add(user);
         return user;
     }
 
-//    public User deleteById(int id){
-//
-//    }
+    public void deleteById(int id) {
+         users.removeIf(user -> user.getId().equals(id));
+    }
 }
