@@ -11,6 +11,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.alawiyaa.rest.webservice.restful_web_services.model.users.User;
 import com.alawiyaa.rest.webservice.restful_web_services.services.UserDaoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
 
@@ -26,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User findOne(@PathVariable int id) {
+    public User findOne(@Valid @PathVariable int id) {
         User user = userDaoService.findOne(id);
         if (user == null) {
             throw new UserNotFoundException("id =" + id);
@@ -36,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> addUser(@RequestBody User user) {
+    public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
         User data = userDaoService.userSave(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(data.getId())
@@ -47,7 +49,6 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id) {
         userDaoService.deleteById(id);
-
     }
 
 }
