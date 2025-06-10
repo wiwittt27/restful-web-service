@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import com.alawiyaa.rest.webservice.restful_web_services.exception.UserNotFoundException;
+import com.alawiyaa.rest.webservice.restful_web_services.model.users.User;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.alawiyaa.rest.webservice.restful_web_services.model.users.User;
 import com.alawiyaa.rest.webservice.restful_web_services.services.UserDaoService;
 
 import jakarta.validation.Valid;
